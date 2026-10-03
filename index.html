@@ -3,132 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
 <title>Aradhya Mobile Store</title>
 <style>
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#172033}
-  .top{background:linear-gradient(135deg,#0757d9,#1479ee);color:#fff;padding:28px 20px}
-  .top h1{margin:0 0 6px;font-size:28px}.top p{margin:0;opacity:.9}
-  .wrap{max-width:1100px;margin:0 auto;padding:20px}
-  .search{margin-top:18px;width:100%;padding:14px 16px;border:0;border-radius:12px;font-size:16px}
-  .section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}
-  .chips{display:flex;gap:10px;flex-wrap:wrap}.chip{border:1px solid #d6deea;background:#fff;border-radius:20px;padding:9px 15px;cursor:pointer}.chip.active{background:#0b67df;color:#fff}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
-  .card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 3px 15px rgba(20,40,80,.08)}
-  .phone{height:170px;width:100%;object-fit:contain;border-radius:12px;background:#eef3f9}
-  .card h3{margin:12px 0 5px;font-size:17px}.muted{color:#68758a;font-size:13px}
-  .price{font-weight:700;font-size:18px;margin-top:8px}.rating{color:#e9a400;font-size:14px;margin-top:5px}
-  button{border:0;border-radius:10px;padding:11px 14px;background:#0b67df;color:#fff;font-weight:700;cursor:pointer}
-  button.secondary{background:#fff;color:#0b67df;border:1px solid #0b67df}
-  .actions{display:flex;gap:8px;margin-top:12px}.actions button{flex:1}
-  .panel{background:#fff;border-radius:16px;padding:18px;box-shadow:0 3px 15px rgba(20,40,80,.08);margin-top:24px}
-  label{display:block;font-weight:700;margin:12px 0 7px}
-  input,select{width:100%;padding:12px;border:1px solid #ccd6e4;border-radius:10px;background:#fff}
-  .upload{border:2px dashed #9bb9e6;border-radius:14px;padding:24px;text-align:center;background:#f7fbff}
-  #preview{max-width:160px;max-height:160px;margin:14px auto;display:none;border-radius:12px;object-fit:contain}
-  .cart{position:fixed;right:20px;bottom:20px;background:#0b67df;color:#fff;border-radius:50px;padding:13px 18px;box-shadow:0 8px 25px rgba(11,103,223,.35)}
-  .notice{padding:12px 14px;background:#eaf4ff;border-radius:10px;color:#174a8c;margin-top:12px;display:none}
-  footer{text-align:center;color:#7b8798;padding:30px 0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f7fb;color:#111827}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.top{background:#111827;color:#fff;padding:10px 16px;text-align:center;font-size:13px}
+header{background:#fff;position:sticky;top:0;z-index:20;box-shadow:0 2px 12px #00000012}
+.nav{max-width:1200px;margin:auto;display:flex;align-items:center;gap:18px;padding:16px}
+.logo{font-size:22px;font-weight:900;white-space:nowrap}.logo span{color:#2563eb}
+.search{flex:1;display:flex;background:#f3f4f6;border-radius:12px;overflow:hidden}
+.search input{width:100%;border:0;outline:0;background:transparent;padding:13px 15px}
+.search button{background:#2563eb;color:#fff;padding:0 18px}
+.navbtn{background:#f3f4f6;border-radius:12px;padding:11px 14px;font-weight:700}
+.badge{background:#ef4444;color:#fff;border-radius:99px;padding:2px 7px;font-size:11px}
+main{max-width:1200px;margin:auto;padding:24px 16px 100px}
+.hero{background:linear-gradient(135deg,#111827,#2563eb);color:white;border-radius:24px;padding:42px 34px;display:flex;justify-content:space-between;align-items:center;overflow:hidden}
+.hero h1{font-size:clamp(30px,5vw,54px);line-height:1.05;margin:10px 0}.hero p{color:#dbeafe;max-width:520px}
+.hero button,.primary{background:#fff;color:#111827;border-radius:12px;padding:13px 18px;font-weight:800;margin-top:20px}
+.phone{font-size:130px;filter:drop-shadow(0 20px 20px #0005);transform:rotate(-10deg)}
+.section{margin-top:30px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.section h2{font-size:24px}
+.categories{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.cat{background:#fff;border-radius:16px;padding:18px;text-align:center;box-shadow:0 2px 12px #00000008}.cat div{font-size:30px;margin-bottom:7px}.cat b{font-size:13px}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:#fff;border-radius:18px;padding:14px;box-shadow:0 3px 16px #0000000c;position:relative;transition:.2s}.card:hover{transform:translateY(-3px)}
+.pic{height:190px;border-radius:14px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:95px}
+.heart{position:absolute;right:22px;top:22px;width:36px;height:36px;border-radius:50%;background:#fff;box-shadow:0 2px 8px #0002}.heart.on{color:#ef4444}
+.card h3{margin:13px 0 5px;font-size:16px}.muted{color:#6b7280;font-size:13px}.price{font-size:20px;font-weight:900;margin:10px 0}.old{text-decoration:line-through;color:#9ca3af;font-size:13px;font-weight:500;margin-left:6px}
+.add{width:100%;background:#111827;color:#fff;padding:11px;border-radius:10px;font-weight:800}
+.drawer{position:fixed;inset:0;background:#0006;display:none;z-index:50}.drawer.open{display:block}
+.panel{position:absolute;right:0;top:0;height:100%;width:min(430px,94vw);background:#fff;padding:22px;overflow:auto}.close{float:right;background:#f3f4f6;border-radius:10px;padding:8px}
+.cartitem{display:flex;gap:12px;padding:15px 0;border-bottom:1px solid #e5e7eb}.mini{width:65px;height:65px;border-radius:10px;background:#f1f5f9;display:grid;place-items:center;font-size:34px}
+.qty{display:flex;align-items:center;gap:8px;margin-top:7px}.qty button{width:28px;height:28px;border-radius:8px;background:#e5e7eb}
+.total{font-size:21px;font-weight:900;display:flex;justify-content:space-between;margin:20px 0}.checkout{width:100%;padding:14px;border-radius:12px;background:#2563eb;color:#fff;font-weight:900}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:60;padding:16px}.modal.open{display:flex}
+.modalbox{background:#fff;border-radius:20px;width:min(650px,100%);padding:22px;max-height:90vh;overflow:auto}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:22px}.detailpic{min-height:330px;border-radius:18px;background:#f1f5f9;display:grid;place-items:center;font-size:150px}
+footer{background:#111827;color:#d1d5db;padding:35px 16px;text-align:center}
+@media(max-width:850px){.products{grid-template-columns:repeat(2,1fr)}.categories{grid-template-columns:repeat(3,1fr)}.phone{display:none}.nav{flex-wrap:wrap}.search{order:3;flex-basis:100%}}
+@media(max-width:520px){.products{grid-template-columns:1fr 1fr;gap:10px}.pic{height:145px;font-size:70px}.categories{grid-template-columns:repeat(2,1fr)}.hero{padding:30px 22px}.card{padding:10px}.navbtn{padding:10px}.logo{font-size:19px}}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap">
-    <h1>Aradhya Mobile Store</h1>
-    <p>Your Dream Phone, Our Priority</p>
-    <input id="search" class="search" placeholder="Search for mobiles, brands..." oninput="renderProducts()">
+<div class="top">🔥 Festive Deals • Free delivery on selected orders</div>
+<header>
+  <div class="nav">
+    <div class="logo">Aradhya <span>Mobile Store</span></div>
+    <div class="search"><input id="search" placeholder="Search phones, accessories..." oninput="renderProducts()"><button onclick="renderProducts()">🔍</button></div>
+    <button class="navbtn" onclick="openCart()">🛒 <span id="cartCount" class="badge">0</span></button>
+    <button class="navbtn" onclick="showAccount()">👤</button>
   </div>
 </header>
 
-<main class="wrap">
-  <div class="section-title"><h2>Categories</h2></div>
-  <div class="chips">
-    <button class="chip active" onclick="setBrand('All',this)">All</button>
-    <button class="chip" onclick="setBrand('Samsung',this)">Samsung</button>
-    <button class="chip" onclick="setBrand('Apple',this)">Apple</button>
-    <button class="chip" onclick="setBrand('vivo',this)">vivo</button>
-    <button class="chip" onclick="setBrand('OnePlus',this)">OnePlus</button>
-    <button class="chip" onclick="setBrand('realme',this)">realme</button>
-  </div>
+<main>
+<section class="hero">
+  <div><div>NEW ARRIVALS</div><h1>Upgrade Your<br>Mobile Experience.</h1><p>Discover smartphones and accessories at great prices. Shop your next device today.</p><button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now →</button></div>
+  <div class="phone">📱</div>
+</section>
 
-  <div class="section-title"><h2>Mobiles</h2><span id="count" class="muted"></span></div>
-  <div id="products" class="grid"></div>
+<section class="section">
+ <div class="sectionhead"><h2>Shop by Category</h2></div>
+ <div class="categories">
+  <div class="cat" onclick="filterCat('Smartphones')"><div>📱</div><b>Smartphones</b></div>
+  <div class="cat" onclick="filterCat('iPhone')"><div>🍎</div><b>iPhone</b></div>
+  <div class="cat" onclick="filterCat('Android')"><div>🤖</div><b>Android</b></div>
+  <div class="cat" onclick="filterCat('Accessories')"><div>🎧</div><b>Accessories</b></div>
+  <div class="cat" onclick="filterCat('Deals')"><div>🔥</div><b>Deals</b></div>
+ </div>
+</section>
 
-  <section class="panel">
-    <div class="section-title"><h2>Add Product / Upload Image</h2><span class="muted">Admin prototype</span></div>
-    <label>Product name</label>
-    <input id="name" placeholder="e.g. Samsung Galaxy S24">
-    <label>Brand</label>
-    <select id="brand"><option>Samsung</option><option>Apple</option><option>vivo</option><option>OnePlus</option><option>realme</option></select>
-    <label>Price (₹)</label>
-    <input id="price" type="number" placeholder="74999">
-    <label>Variant</label>
-    <input id="variant" placeholder="8GB + 256GB">
-    <label>Product image</label>
-    <div class="upload">
-      <input id="imageFile" type="file" accept="image/*" onchange="previewImage(event)">
-      <img id="preview" alt="Preview">
-      <div class="muted">Choose an image from your device. The image is used only in this browser prototype.</div>
-    </div>
-    <button style="margin-top:14px;width:100%" onclick="addProduct()">Add Product</button>
-    <div id="notice" class="notice"></div>
-  </section>
-
-  <section class="panel">
-    <div class="section-title"><h2>Cart</h2><span id="cartTotal" class="price">₹0</span></div>
-    <div id="cartItems" class="muted">Your cart is empty.</div>
-    <button style="margin-top:14px" onclick="checkout()">Proceed to Checkout</button>
-  </section>
+<section class="section" id="products">
+ <div class="sectionhead"><h2>Featured Products</h2><button class="muted" onclick="clearFilter()">View all</button></div>
+ <div id="productGrid" class="products"></div>
+</section>
 </main>
 
-<div class="cart" onclick="document.querySelector('.panel:last-of-type').scrollIntoView({behavior:'smooth'})">🛒 Cart (<span id="cartCount">0</span>)</div>
+<footer><b>Aradhya Mobile Store</b><br><br>Quality mobiles & accessories • Built for GitHub Pages<br><small>© 2026 Aradhya Mobile Store</small></footer>
 
-<footer>Aradhya Mobile Store — AMS starter web prototype</footer>
+<div id="cartDrawer" class="drawer" onclick="if(event.target===this)closeCart()">
+ <div class="panel"><button class="close" onclick="closeCart()">✕</button><h2>🛒 Your Cart</h2><div id="cartItems" style="margin-top:20px"></div><div class="total"><span>Total</span><span id="total">₹0</span></div><button class="checkout" onclick="checkout()">Proceed to Checkout</button></div>
+</div>
+
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()">
+ <div class="modalbox" id="modalContent"></div>
+</div>
 
 <script>
-let products = [
- {name:'iPhone 16',brand:'Apple',price:79999,variant:'6GB + 128GB',rating:'4.7',image:'https://images.unsplash.com/photo-1592286927505-2fd0d4f8a2d3?auto=format&fit=crop&w=600&q=80'},
- {name:'Samsung Galaxy S24',brand:'Samsung',price:74999,variant:'8GB + 256GB',rating:'4.6',image:'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80'},
- {name:'OnePlus 13',brand:'OnePlus',price:69999,variant:'8GB + 256GB',rating:'4.5',image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80'},
- {name:'vivo V40',brand:'vivo',price:39999,variant:'8GB + 128GB',rating:'4.4',image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80'},
- {name:'realme 13 Pro',brand:'realme',price:34999,variant:'8GB + 128GB',rating:'4.3',image:'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=600&q=80'}
+const products=[
+ {id:1,name:"iPhone 16",cat:"iPhone",price:69999,old:79999,icon:"📱",desc:"Powerful performance, beautiful display and advanced camera."},
+ {id:2,name:"Samsung Galaxy S25",cat:"Android",price:74999,old:82999,icon:"📱",desc:"Premium Galaxy smartphone with a fast processor and stunning display."},
+ {id:3,name:"OnePlus 13",cat:"Android",price:64999,old:69999,icon:"📱",desc:"Fast, smooth and powerful flagship smartphone."},
+ {id:4,name:"Redmi Note 14 Pro",cat:"Android",price:24999,old:29999,icon:"📱",desc:"Feature-packed phone with excellent everyday performance."},
+ {id:5,name:"AirPods Pro",cat:"Accessories",price:21999,old:24999,icon:"🎧",desc:"Wireless earbuds with immersive audio and active noise cancellation."},
+ {id:6,name:"Fast Charger 67W",cat:"Accessories",price:1499,old:1999,icon:"🔌",desc:"Compact high-speed charging adapter."},
+ {id:7,name:"iPhone 15",cat:"Deals",price:59999,old:69999,icon:"📱",desc:"A powerful iPhone with an excellent camera system."},
+ {id:8,name:"Realme GT",cat:"Deals",price:32999,old:37999,icon:"📱",desc:"Performance-focused smartphone for work and entertainment."}
 ];
-let brandFilter='All', cart=[];
+let cart=JSON.parse(localStorage.getItem("amsCart")||"[]"), filter="";
+const money=n=>"₹"+n.toLocaleString("en-IN");
 
-function setBrand(b,el){brandFilter=b;document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderProducts()}
 function renderProducts(){
- const q=document.getElementById('search').value.toLowerCase();
- const list=products.filter(p=>(brandFilter==='All'||p.brand===brandFilter)&&(`${p.name} ${p.brand}`.toLowerCase().includes(q)));
- document.getElementById('count').textContent=list.length+' products';
- document.getElementById('products').innerHTML=list.map((p,i)=>`
+ const q=document.getElementById("search").value.toLowerCase();
+ let list=products.filter(p=>(!filter||p.cat===filter)&&(!q||p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)));
+ document.getElementById("productGrid").innerHTML=list.map(p=>`
  <article class="card">
-   <img class="phone" src="${p.image}" alt="${p.name}" onerror="this.style.visibility='hidden'">
-   <h3>${p.name}</h3><div class="muted">${p.brand} • ${p.variant}</div>
-   <div class="rating">★ ${p.rating}</div><div class="price">₹${p.price.toLocaleString('en-IN')}</div>
-   <div class="actions"><button onclick="addCart('${p.name}')">Add to Cart</button><button class="secondary" onclick="buyNow('${p.name}')">Buy Now</button></div>
- </article>`).join('');
+  <button class="heart" onclick="toggleHeart(this)">♡</button>
+  <div class="pic" onclick="showProduct(${p.id})">${p.icon}</div>
+  <div class="muted">${p.cat}</div><h3>${p.name}</h3>
+  <div class="price">${money(p.price)} <span class="old">${money(p.old)}</span></div>
+  <button class="add" onclick="addCart(${p.id})">Add to Cart</button>
+ </article>`).join("")||"<p>No products found.</p>";
 }
-function addCart(name){const p=products.find(x=>x.name===name);cart.push(p);renderCart();alert(name+' added to cart.')}
-function buyNow(name){addCart(name);document.querySelector('.panel:last-of-type').scrollIntoView({behavior:'smooth'})}
+function filterCat(c){filter=c;document.getElementById("products").scrollIntoView({behavior:"smooth"});renderProducts()}
+function clearFilter(){filter="";document.getElementById("search").value="";renderProducts()}
+function addCart(id){let x=cart.find(i=>i.id===id);x?x.qty++:cart.push({id,qty:1});save();openCart()}
+function save(){localStorage.setItem("amsCart",JSON.stringify(cart));updateCount()}
+function updateCount(){document.getElementById("cartCount").textContent=cart.reduce((s,i)=>s+i.qty,0)}
+function openCart(){renderCart();document.getElementById("cartDrawer").classList.add("open")}
+function closeCart(){document.getElementById("cartDrawer").classList.remove("open")}
 function renderCart(){
- document.getElementById('cartCount').textContent=cart.length;
- const total=cart.reduce((s,p)=>s+p.price,0);
- document.getElementById('cartTotal').textContent='₹'+total.toLocaleString('en-IN');
- document.getElementById('cartItems').innerHTML=cart.length?cart.map((p,i)=>`${i+1}. ${p.name} — ${p.variant} — ₹${p.price.toLocaleString('en-IN')}`).join('<br>'):'Your cart is empty.';
+ const el=document.getElementById("cartItems");
+ if(!cart.length){el.innerHTML="<p class='muted' style='padding:35px 0;text-align:center'>Your cart is empty.</p>";document.getElementById("total").textContent="₹0";return}
+ let total=0;
+ el.innerHTML=cart.map(i=>{let p=products.find(x=>x.id===i.id);total+=p.price*i.qty;return `<div class="cartitem"><div class="mini">${p.icon}</div><div style="flex:1"><b>${p.name}</b><div>${money(p.price)}</div><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button><span>${i.qty}</span><button onclick="changeQty(${p.id},1)">+</button><button onclick="removeCart(${p.id})" style="margin-left:auto">🗑️</button></div></div></div>`}).join("");
+ document.getElementById("total").textContent=money(total);
 }
-function previewImage(e){const f=e.target.files[0];if(!f)return;const img=document.getElementById('preview');img.src=URL.createObjectURL(f);img.style.display='block'}
-function addProduct(){
- const name=document.getElementById('name').value.trim(), brand=document.getElementById('brand').value;
- const price=Number(document.getElementById('price').value), variant=document.getElementById('variant').value.trim()||'8GB + 128GB';
- const file=document.getElementById('imageFile').files[0];
- if(!name||!price){alert('Please enter product name and price.');return}
- const image=file?URL.createObjectURL(file):'';
- products.unshift({name,brand,price,variant,rating:'New',image});
- renderProducts();
- const n=document.getElementById('notice');n.textContent='Product added to this browser session. For permanent storage, connect this form to a backend/database.';n.style.display='block';
+function changeQty(id,n){let x=cart.find(i=>i.id===id);x.qty+=n;if(x.qty<=0)cart=cart.filter(i=>i.id!==id);save();renderCart()}
+function removeCart(id){cart=cart.filter(i=>i.id!==id);save();renderCart()}
+function showProduct(id){
+ let p=products.find(x=>x.id===id);
+ document.getElementById("modalContent").innerHTML=`<button class="close" onclick="closeModal()">✕</button><div class="detail"><div class="detailpic">${p.icon}</div><div><div class="muted">${p.cat}</div><h2 style="margin:10px 0">${p.name}</h2><div class="price">${money(p.price)} <span class="old">${money(p.old)}</span></div><p class="muted" style="line-height:1.7;margin:15px 0">${p.desc}</p><button class="checkout" onclick="addCart(${p.id});closeModal()">Add to Cart</button></div></div>`;
+ document.getElementById("modal").classList.add("open");
 }
-function checkout(){if(!cart.length){alert('Cart is empty.');return}alert('Checkout prototype: Address → Payment → Order Tracking will be connected in the next development step.')}
-renderProducts();renderCart();
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function showAccount(){document.getElementById("modalContent").innerHTML=`<button class="close" onclick="closeModal()">✕</button><h2>👤 My Account</h2><p class="muted" style="margin:15px 0">Sign in to view your orders, saved addresses and wishlist.</p><input placeholder="Mobile number or email" style="width:100%;padding:13px;border:1px solid #ddd;border-radius:10px"><button class="checkout" style="margin-top:12px">Continue</button>`;document.getElementById("modal").classList.add("open")}
+function checkout(){
+ if(!cart.length)return alert("Your cart is empty.");
+ alert("Checkout demo: your cart is ready. Connect your preferred payment/order system here.");
+}
+function toggleHeart(btn){btn.classList.toggle("on");btn.textContent=btn.classList.contains("on")?"♥":"♡"}
+renderProducts();updateCount();
 </script>
 </body>
 </html>
