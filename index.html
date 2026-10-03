@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aradhya Mobile Store</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#172033}
+  .top{background:linear-gradient(135deg,#0757d9,#1479ee);color:#fff;padding:28px 20px}
+  .top h1{margin:0 0 6px;font-size:28px}.top p{margin:0;opacity:.9}
+  .wrap{max-width:1100px;margin:0 auto;padding:20px}
+  .search{margin-top:18px;width:100%;padding:14px 16px;border:0;border-radius:12px;font-size:16px}
+  .section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap}.chip{border:1px solid #d6deea;background:#fff;border-radius:20px;padding:9px 15px;cursor:pointer}.chip.active{background:#0b67df;color:#fff}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+  .card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 3px 15px rgba(20,40,80,.08)}
+  .phone{height:170px;width:100%;object-fit:contain;border-radius:12px;background:#eef3f9}
+  .card h3{margin:12px 0 5px;font-size:17px}.muted{color:#68758a;font-size:13px}
+  .price{font-weight:700;font-size:18px;margin-top:8px}.rating{color:#e9a400;font-size:14px;margin-top:5px}
+  button{border:0;border-radius:10px;padding:11px 14px;background:#0b67df;color:#fff;font-weight:700;cursor:pointer}
+  button.secondary{background:#fff;color:#0b67df;border:1px solid #0b67df}
+  .actions{display:flex;gap:8px;margin-top:12px}.actions button{flex:1}
+  .panel{background:#fff;border-radius:16px;padding:18px;box-shadow:0 3px 15px rgba(20,40,80,.08);margin-top:24px}
+  label{display:block;font-weight:700;margin:12px 0 7px}
+  input,select{width:100%;padding:12px;border:1px solid #ccd6e4;border-radius:10px;background:#fff}
+  .upload{border:2px dashed #9bb9e6;border-radius:14px;padding:24px;text-align:center;background:#f7fbff}
+  #preview{max-width:160px;max-height:160px;margin:14px auto;display:none;border-radius:12px;object-fit:contain}
+  .cart{position:fixed;right:20px;bottom:20px;background:#0b67df;color:#fff;border-radius:50px;padding:13px 18px;box-shadow:0 8px 25px rgba(11,103,223,.35)}
+  .notice{padding:12px 14px;background:#eaf4ff;border-radius:10px;color:#174a8c;margin-top:12px;display:none}
+  footer{text-align:center;color:#7b8798;padding:30px 0}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <h1>Aradhya Mobile Store</h1>
+    <p>Your Dream Phone, Our Priority</p>
+    <input id="search" class="search" placeholder="Search for mobiles, brands..." oninput="renderProducts()">
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="section-title"><h2>Categories</h2></div>
+  <div class="chips">
+    <button class="chip active" onclick="setBrand('All',this)">All</button>
+    <button class="chip" onclick="setBrand('Samsung',this)">Samsung</button>
+    <button class="chip" onclick="setBrand('Apple',this)">Apple</button>
+    <button class="chip" onclick="setBrand('vivo',this)">vivo</button>
+    <button class="chip" onclick="setBrand('OnePlus',this)">OnePlus</button>
+    <button class="chip" onclick="setBrand('realme',this)">realme</button>
+  </div>
+
+  <div class="section-title"><h2>Mobiles</h2><span id="count" class="muted"></span></div>
+  <div id="products" class="grid"></div>
+
+  <section class="panel">
+    <div class="section-title"><h2>Add Product / Upload Image</h2><span class="muted">Admin prototype</span></div>
+    <label>Product name</label>
+    <input id="name" placeholder="e.g. Samsung Galaxy S24">
+    <label>Brand</label>
+    <select id="brand"><option>Samsung</option><option>Apple</option><option>vivo</option><option>OnePlus</option><option>realme</option></select>
+    <label>Price (₹)</label>
+    <input id="price" type="number" placeholder="74999">
+    <label>Variant</label>
+    <input id="variant" placeholder="8GB + 256GB">
+    <label>Product image</label>
+    <div class="upload">
+      <input id="imageFile" type="file" accept="image/*" onchange="previewImage(event)">
+      <img id="preview" alt="Preview">
+      <div class="muted">Choose an image from your device. The image is used only in this browser prototype.</div>
+    </div>
+    <button style="margin-top:14px;width:100%" onclick="addProduct()">Add Product</button>
+    <div id="notice" class="notice"></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-title"><h2>Cart</h2><span id="cartTotal" class="price">₹0</span></div>
+    <div id="cartItems" class="muted">Your cart is empty.</div>
+    <button style="margin-top:14px" onclick="checkout()">Proceed to Checkout</button>
+  </section>
+</main>
+
+<div class="cart" onclick="document.querySelector('.panel:last-of-type').scrollIntoView({behavior:'smooth'})">🛒 Cart (<span id="cartCount">0</span>)</div>
+
+<footer>Aradhya Mobile Store — AMS starter web prototype</footer>
+
+<script>
+let products = [
+ {name:'iPhone 16',brand:'Apple',price:79999,variant:'6GB + 128GB',rating:'4.7',image:'https://images.unsplash.com/photo-1592286927505-2fd0d4f8a2d3?auto=format&fit=crop&w=600&q=80'},
+ {name:'Samsung Galaxy S24',brand:'Samsung',price:74999,variant:'8GB + 256GB',rating:'4.6',image:'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80'},
+ {name:'OnePlus 13',brand:'OnePlus',price:69999,variant:'8GB + 256GB',rating:'4.5',image:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80'},
+ {name:'vivo V40',brand:'vivo',price:39999,variant:'8GB + 128GB',rating:'4.4',image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80'},
+ {name:'realme 13 Pro',brand:'realme',price:34999,variant:'8GB + 128GB',rating:'4.3',image:'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=600&q=80'}
+];
+let brandFilter='All', cart=[];
+
+function setBrand(b,el){brandFilter=b;document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderProducts()}
+function renderProducts(){
+ const q=document.getElementById('search').value.toLowerCase();
+ const list=products.filter(p=>(brandFilter==='All'||p.brand===brandFilter)&&(`${p.name} ${p.brand}`.toLowerCase().includes(q)));
+ document.getElementById('count').textContent=list.length+' products';
+ document.getElementById('products').innerHTML=list.map((p,i)=>`
+ <article class="card">
+   <img class="phone" src="${p.image}" alt="${p.name}" onerror="this.style.visibility='hidden'">
+   <h3>${p.name}</h3><div class="muted">${p.brand} • ${p.variant}</div>
+   <div class="rating">★ ${p.rating}</div><div class="price">₹${p.price.toLocaleString('en-IN')}</div>
+   <div class="actions"><button onclick="addCart('${p.name}')">Add to Cart</button><button class="secondary" onclick="buyNow('${p.name}')">Buy Now</button></div>
+ </article>`).join('');
+}
+function addCart(name){const p=products.find(x=>x.name===name);cart.push(p);renderCart();alert(name+' added to cart.')}
+function buyNow(name){addCart(name);document.querySelector('.panel:last-of-type').scrollIntoView({behavior:'smooth'})}
+function renderCart(){
+ document.getElementById('cartCount').textContent=cart.length;
+ const total=cart.reduce((s,p)=>s+p.price,0);
+ document.getElementById('cartTotal').textContent='₹'+total.toLocaleString('en-IN');
+ document.getElementById('cartItems').innerHTML=cart.length?cart.map((p,i)=>`${i+1}. ${p.name} — ${p.variant} — ₹${p.price.toLocaleString('en-IN')}`).join('<br>'):'Your cart is empty.';
+}
+function previewImage(e){const f=e.target.files[0];if(!f)return;const img=document.getElementById('preview');img.src=URL.createObjectURL(f);img.style.display='block'}
+function addProduct(){
+ const name=document.getElementById('name').value.trim(), brand=document.getElementById('brand').value;
+ const price=Number(document.getElementById('price').value), variant=document.getElementById('variant').value.trim()||'8GB + 128GB';
+ const file=document.getElementById('imageFile').files[0];
+ if(!name||!price){alert('Please enter product name and price.');return}
+ const image=file?URL.createObjectURL(file):'';
+ products.unshift({name,brand,price,variant,rating:'New',image});
+ renderProducts();
+ const n=document.getElementById('notice');n.textContent='Product added to this browser session. For permanent storage, connect this form to a backend/database.';n.style.display='block';
+}
+function checkout(){if(!cart.length){alert('Cart is empty.');return}alert('Checkout prototype: Address → Payment → Order Tracking will be connected in the next development step.')}
+renderProducts();renderCart();
+</script>
+</body>
+</html>
